@@ -93,11 +93,11 @@ if SUPPORT_CHAT:
         raise SystemExit("[ERROR] - Your SUPPORT_CHAT URL is wrong. It must start with https://")
 
 # ------------------------------------
-# Test the LOGGER_ID by sending a test message when the bot starts
+# Corrected part here
 app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-@app.on_start()
-async def send_log_message(client):
+@app.on_message(filters.command('start'))
+async def start_command(client, message):
     try:
         # Try sending a test message to the log group/channel
         await client.send_message(LOGGER_ID, "Test message to log group.")
