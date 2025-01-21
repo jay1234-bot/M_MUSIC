@@ -1,8 +1,8 @@
 import re
 from os import getenv
 from dotenv import load_dotenv
+from pyrogram import Client
 from pyrogram import filters
-from pyrogram import Client  # Importing Client to test the LOGGER_ID
 
 load_dotenv()
 
@@ -93,17 +93,16 @@ if SUPPORT_CHAT:
         raise SystemExit("[ERROR] - Your SUPPORT_CHAT URL is wrong. It must start with https://")
 
 # ------------------------------------
-# Test if the bot can send a message to the log group
+# Test the LOGGER_ID by sending a test message when the bot starts
 app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-@app.on_ready()
-async def send_log_message():
+@app.on_start()
+async def send_log_message(client):
     try:
         # Try sending a test message to the log group/channel
-        await app.send_message(LOGGER_ID, "Test message to log group.")
+        await client.send_message(LOGGER_ID, "Test message to log group.")
         print(f"Test message sent successfully to log group {LOGGER_ID}.")
     except Exception as e:
         print(f"Error sending test message to log group {LOGGER_ID}: {e}")
 
 app.run()
-
